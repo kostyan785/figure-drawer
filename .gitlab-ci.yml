@@ -1,0 +1,102 @@
+# Official framework image. Look for the different tagged releases at:
+# https://hub.docker.com/r/library/node/tags/
+image: node:latest
+
+stages:
+  - lint
+  - build
+# TODO код для задачи https://redmine.nko.ru.com/redmine/issues/1138
+#  - build-demo-2d
+#  - build-demo-3d
+#  - build-demo-2e
+  - test
+  - deploy
+  - update-npx-browserslist
+
+# This folder is cached between builds
+# https://docs.gitlab.com/ee/ci/yaml/index.html#cache
+cache:
+  paths:
+    - node_modules/
+# TODO код для задачи https://redmine.nko.ru.com/redmine/issues/1138
+#    - ./packages/plan-base/dist
+#    - ./packages/plan-view2d/dist
+#    - ./packages/plan-view3d/dist
+#    - ./packages/plan-edit2d/dist
+
+npm-lint:
+  stage: lint
+  script:
+    - yarn lint
+
+npm-build:
+  stage: build
+  script:
+    - node --version
+    - CI=false && yarn && yarn bootstrap && yarn build
+
+  artifacts:
+    paths:
+# TODO код для задачи https://redmine.nko.ru.com/redmine/issues/1138
+#      - ./packages/layout3d-web/build
+#      - ./packages/plan-ionic-demo/build
+
+update_npx_browserslist:
+  stage: update-npx-browserslist
+  script:
+     - npx update-browserslist-db@latest
+  when: manual
+# TODO код для задачи https://redmine.nko.ru.com/redmine/issues/1138
+#npm-demo-2d:
+#  stage: build-demo-2d
+#  script:
+#    - yarn pv_build
+#
+#  artifacts:
+#    paths:
+#      - ./packages/plan-view2d/examples-build
+#
+#npm-demo-2e:
+#  stage: build-demo-2e
+#  script:
+#    - yarn pe_build
+#
+#  artifacts:
+#    paths:
+#      - ./packages/plan-edit2d/examples-build
+#npm-demo-3d:
+#  stage: build-demo-3d
+#  script:
+#    - yarn pv3_build
+#
+#  artifacts:
+#    paths:
+#      - ./packages/plan-view3d/examples-build
+
+npm-test-unit:
+  stage: test
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - yarn test
+
+deploy:
+  stage: deploy
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - ls -lsa /var/www/layout-demo
+    - whoami
+    - chmod +x ./
+    - mkdir -p /var/www/layout-demo/$CI_COMMIT_REF_NAME
+# TODO код для задачи https://redmine.nko.ru.com/redmine/issues/1138
+#    - mkdir -p /var/www/layout3d/pv2d/$CI_COMMIT_REF_NAME
+#    - mkdir -p /var/www/layout3d/pv3d/$CI_COMMIT_REF_NAME
+#    - mkdir -p /var/www/layout3d/pe2d/$CI_COMMIT_REF_NAME
+    - mkdir -p /var/www/layout-demo/$CI_COMMIT_REF_NAME
+    - cp -rf ./packages/layout3d-web/build/* /var/www/layout-demo/$CI_COMMIT_REF_NAME
+# TODO код для задачи https://redmine.nko.ru.com/redmine/issues/1138
+#    - cp -rf ./packages/plan-view2d/examples-build/* /var/www/layout3d/pv2d/$CI_COMMIT_REF_NAME
+#    - cp -rf ./packages/plan-view3d/examples-build/* /var/www/layout3d/pv3d/$CI_COMMIT_REF_NAME
+#    - cp -rf ./packages/plan-edit2d/examples-build/* /var/www/layout3d/pe2d/$CI_COMMIT_REF_NAME
+#    - cp -rf ./packages/plan-ionic-demo/build/* /var/www/layout3d/ionic/$CI_COMMIT_REF_NAME
