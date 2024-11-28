@@ -3,11 +3,10 @@ import { Svg, SVG } from '@svgdotjs/svg.js';
 import { initModel } from './model';
 import './App.css';
 
+const model = initModel();
 
 const App: FC = () => {
   const [svg, setSvg] = useState<Svg | undefined>();
-
-  const [model] = useState(initModel());
 
   useEffect(() => {
     const newSvg = SVG().addTo('#app').height('100%').width('100%');
@@ -25,7 +24,7 @@ const App: FC = () => {
       svg?.circle(10).cx(vertex.point.x).cy(vertex.point.y).fill('#0f0');
     });
 
-  }, [model, svg]);
+  }, [svg]);
 
   return (
     <div className="App" id="app" style={{ height: '1000px' }}>
