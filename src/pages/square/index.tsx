@@ -1,18 +1,19 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState, useLayoutEffect } from 'react';
 import { Svg, SVG } from '@svgdotjs/svg.js';
 
 import Checkbox from '../../components/checkbox';
 import { initModel } from '../../model';
 import './index.css';
 
+const model = initModel();
+
 const Square: FC = () => {
     const [svg, setSvg] = useState<Svg | undefined>();
     const [showVertices, setShowVertices] = useState(true);
     const [showLines, setShowLines] = useState(true);
 
-    const [model] = useState(initModel());
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         setSvg(SVG().addTo('#square').height('100%').width('100%'));
     }, []);
 
@@ -30,7 +31,7 @@ const Square: FC = () => {
                 svg?.circle(10).cx(vertex.point.x).cy(vertex.point.y).fill('#0f0');
             });
         }
-    }, [model, svg, showLines, showVertices]);
+    }, [svg, showLines, showVertices]);
 
     return (
         <div className="square">

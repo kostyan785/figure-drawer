@@ -1,0 +1,7 @@
+.room {
+  border-top: 1px solid lightgray;
+}
+
+.room__svg-container {
+  height: 200px;
+}

@@ -25,6 +25,21 @@ export class Model {
   ) {}
 }
 
+export class Room {
+  constructor(
+    public readonly lines: Line[],
+  ) {}
+}
+
+export const initRoom = (coords: number[][]): Room => {
+  const vertices: Vertex[] = coords.map(x => new Vertex( new Point(x[0], x[1])));
+    const lines: Line[] = vertices.map((vertex, index) => {
+    const other = vertices[index < vertices.length - 1? index + 1 : 0];
+    return new Line(vertex, other);
+  });
+  return new Room(lines);
+};
+
 
 /**
  * Генерация модели.
