@@ -11,7 +11,7 @@ const App: FC = () => {
   useEffect(() => {
     const newSvg = SVG().addTo('#app').height('100%').width('100%');
     setSvg(newSvg);
-  }, [setSvg] );
+  }, []);
 
   useEffect(() => {
     svg?.clear();
