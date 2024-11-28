@@ -1,10 +1,10 @@
+import React, { FC, useEffect, useState } from 'react';
 import { Svg, SVG } from '@svgdotjs/svg.js';
-import React, { useEffect, useState } from 'react';
+import { initModel } from './model';
 import './App.css';
-import { initModel } from "./model";
 
 
-function App() {
+const App: FC = () => {
   const [svg, setSvg] = useState<Svg | undefined>();
 
   const [model] = useState(initModel());
@@ -26,7 +26,6 @@ function App() {
     });
 
   }, [model, svg]);
-
 
   return (
     <div className="App" id="app" style={{ height: '1000px' }}>
