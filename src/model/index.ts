@@ -31,7 +31,9 @@ export class Room {
   ) {}
 }
 
-export const initRoom = (coords: number[][]): Room => {
+export type Coords = number[][];
+
+export const initRoom = (coords: Coords): Room => {
   const vertices: Vertex[] = coords.map(x => new Vertex( new Point(x[0], x[1])));
     const lines: Line[] = vertices.map((vertex, index) => {
     const other = vertices[index < vertices.length - 1? index + 1 : 0];
