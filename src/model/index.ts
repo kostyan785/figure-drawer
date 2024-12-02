@@ -1,3 +1,4 @@
+import { Svg } from '@svgdotjs/svg.js';
 export class Point {
   constructor(
     public readonly x: number,
@@ -22,7 +23,21 @@ export class Model {
   constructor(
     public readonly vertices: Vertex[],
     public readonly lines: Line[],
-  ) {}
+  ) {}  
+  printShape = (view: Svg | undefined, shapesToPrint: string[]) => {
+    view?.clear(); // TODO: модель имеет знания о представлении, это неправильно
+    if (shapesToPrint.includes('lines')) {
+      this.lines.forEach(line => {
+        view?.line(line.a.point.x, line.a.point.y, line.b.point.x, line.b.point.y).stroke({ width: 3, color: '#00F' });
+      });
+    }
+
+    if (shapesToPrint.includes('vertices')) {
+      this.vertices.forEach(vertex => {
+        view?.circle(10).cx(vertex.point.x).cy(vertex.point.y).fill('#0f0');
+      });
+    }
+  }
 }
 
 export class Room {

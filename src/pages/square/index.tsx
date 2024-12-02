@@ -1,43 +1,34 @@
 import React, { FC, useEffect, useState, useLayoutEffect } from 'react';
 import { Svg, SVG } from '@svgdotjs/svg.js';
-
-import Checkbox from '../../components/checkbox';
+import Selector from '../../components/selector';
 import { initModel } from '../../model';
 import './index.css';
 
 const model = initModel();
+const shapeList: string[] = Object.entries(model).filter((entry) => typeof entry[1] !== 'function').map(result => result[0]);
 
 const Square: FC = () => {
     const [svg, setSvg] = useState<Svg | undefined>();
-    const [showVertices, setShowVertices] = useState(true);
-    const [showLines, setShowLines] = useState(true);
+    const [toPrint, setToPrint] = useState<string[]>([]);
 
 
     useLayoutEffect(() => {
+        setToPrint(shapeList);
         setSvg(SVG().addTo('#square').height('100%').width('100%'));
     }, []);
 
     useEffect(() => {
-        svg?.clear();
+        model.printShape(svg, toPrint);
+    }, [svg, toPrint]);
 
-        if (showLines) {
-            model.lines.forEach(line => {
-                svg?.line(line.a.point.x, line.a.point.y, line.b.point.x, line.b.point.y).stroke({ width: 3, color: '#00F' });
-            });
-        }
-
-        if (showVertices) {
-            model.vertices.forEach(vertex => {
-                svg?.circle(10).cx(vertex.point.x).cy(vertex.point.y).fill('#0f0');
-            });
-        }
-    }, [svg, showLines, showVertices]);
+    const handleShapeListChange = (value: string[]) => {
+        setToPrint(value);
+    };
 
     return (
         <div className="square">
             <div className='square__checkbox-container'>
-                <Checkbox label='Вершины' onChange={(e) => setShowVertices(e)} />
-                <Checkbox label='Линии' onChange={(e) => setShowLines(e)} />
+                <Selector shapeList={shapeList} onListChange={handleShapeListChange} />
             </div>
             <div className="square__svg-container" id="square"></div>
         </div>

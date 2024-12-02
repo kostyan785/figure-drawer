@@ -2,15 +2,18 @@ import React, { FC, useState, useEffect } from 'react';
 
 export interface Props {
     label: string;
-    onChange: (val:boolean) => void;
+    info: string;
+    onChange: (val:boolean, text: string) => void;
 }
 
-const Checkbox: FC<Props> = ({label, onChange}) => {
+const Checkbox: FC<Props> = ({label, info, onChange}) => {
     const [checked, setChecked] = useState(true);
 
-    useEffect(() => {
-        onChange(checked);        
-    }, [checked, onChange]);
+    useEffect(() => {        
+        onChange(checked, info);
+        // TODO: подумать о использовании useCallback или мемоизации для предотвращения ререндеринга, а пока так:
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [checked]);
     
     return (
         <label>
