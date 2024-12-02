@@ -1,14 +1,20 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import Selector from '../../components/selector';
 import PresenterSvg from '../../views/presenter-svg';
-import { initModel } from '../../model';
+import { initCustomModel } from '../../model';
 import './index.css';
 
-const model = initModel();
-const shapeList: string[] = Object.entries(model).filter((entry) => typeof entry[1] !== 'function').map(result => result[0]);
+const modelInitial = initCustomModel();
+const shapeList: string[] = Object.entries(modelInitial).filter((entry) => typeof entry[1] !== 'function').map(result => result[0]);
 
 const Square: FC = () => {
+    const [model, setModel] = useState(modelInitial);
     const [toPrint, setToPrint] = useState(shapeList);
+
+    useEffect(() => {
+        const m = initCustomModel(toPrint);
+        setModel(m);
+    }, [toPrint]);
 
     const handleShapeListChange = (value: string[]) => {
         setToPrint(value);
@@ -19,7 +25,7 @@ const Square: FC = () => {
             <div className='square__checkbox-container'>
                 <Selector shapeList={shapeList} onListChange={handleShapeListChange} />
             </div>
-            <PresenterSvg model={model} shapesToPrint={toPrint} />
+            <PresenterSvg model={model} />
         </div>
     );
 };

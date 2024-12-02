@@ -5,29 +5,20 @@ import './index.css';
 
 export interface Props {
     model: Model;
-    shapesToPrint: string[];
 }
 
-const PresenterSvg: FC<Props> = ({ model, shapesToPrint }) => {
+// TODO: переименовать
+const PresenterSvg: FC<Props> = ({ model }) => {
     const [svg, setSvg] = useState<Svg | undefined>();
     useEffect(() => {
         svg?.clear();
-        if (shapesToPrint.includes('lines')) {
         model.lines.forEach(line => {
             svg?.line(line.a.point.x, line.a.point.y, line.b.point.x, line.b.point.y).stroke({ width: 3, color: '#00F' });
         });
-        }
-
-    if (shapesToPrint.includes('vertices')) {
-      model.vertices.forEach(vertex => {
-        svg?.circle(10).cx(vertex.point.x).cy(vertex.point.y).fill('#0f0');
-      });
-
-      model.vertices.forEach(vertex => {
-        svg?.circle(10).cx(vertex.point.x).cy(vertex.point.y).fill('#0f0');
-      });
-    }
-    }, [model, svg, shapesToPrint])
+        model.vertices.forEach(vertex => {
+            svg?.circle(10).cx(vertex.point.x).cy(vertex.point.y).fill('#0f0');
+        });
+    }, [model, svg])
 
     useLayoutEffect(() => {
         setSvg(SVG().addTo('#presentersvg').height('100%').width('100%'));

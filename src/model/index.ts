@@ -31,7 +31,7 @@ export class Room {
   ) {}
 }
 
-export type Coords = number[][]; // TODO; TODO: надо бы поточнее типизировать, в пока так
+export type Coords = number[][]; // TODO; надо бы поточнее типизировать, в пока так
 
 export const initRoom = (coords: Coords): Room => {
   const vertices: Vertex[] = coords.map(x => new Vertex( new Point(x[0], x[1])));
@@ -41,6 +41,18 @@ export const initRoom = (coords: Coords): Room => {
   });
   return new Room(lines);
 };
+
+export const initCustomModel = (shapes?: string[]): Model => {
+  const model = initModel();
+  const shapeList = shapes || Object.entries(model).filter((entry) => typeof entry[1] !== 'function').map(result => result[0]);
+  const modelClone = {
+    ...model,
+    lines: shapeList.includes('lines') ? model.lines : [],
+    vertices: shapeList.includes('vertices') ? model.vertices : [],
+  };
+
+  return modelClone;
+}
 
 /**
  * Генерация модели.
