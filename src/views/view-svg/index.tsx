@@ -7,7 +7,6 @@ export interface Props {
     model: Model;
 }
 
-// TODO: переименовать
 const ViewSvg: FC<Props> = ({ model }) => {
     const [svg, setSvg] = useState<Svg | undefined>();
     useEffect(() => {
@@ -21,11 +20,11 @@ const ViewSvg: FC<Props> = ({ model }) => {
     }, [model, svg])
 
     useLayoutEffect(() => {
-        setSvg(SVG().addTo('#presentersvg').height('100%').width('100%'));
+        setSvg(SVG().addTo('#viewsvg').height('100%').width('100%'));
     }, []);
 
     return (
-        <div className="presenter-svg__view-container" id="presentersvg"></div>
+        <div className="presenter-svg__view-container" id="viewsvg"></div>
     );
 };
 
