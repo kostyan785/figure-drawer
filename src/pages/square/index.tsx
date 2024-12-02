@@ -1,6 +1,6 @@
 import React, { FC, useState, useEffect } from 'react';
 import Selector from '../../components/selector';
-import PresenterSvg from '../../views/presenter-svg';
+import ViewSvg from '../../views/view-svg';
 import { initCustomModel } from '../../model';
 import { getModelFieldNames } from '../../utils';
 import './index.css';
@@ -26,7 +26,7 @@ const Square: FC = () => {
             <div className='square__checkbox-container'>
                 <Selector shapeList={shapeList} onListChange={handleShapeListChange} />
             </div>
-            <PresenterSvg model={model} />
+            <ViewSvg model={model} />
         </div>
     );
 };

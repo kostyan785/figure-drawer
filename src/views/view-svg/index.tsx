@@ -8,7 +8,7 @@ export interface Props {
 }
 
 // TODO: переименовать
-const PresenterSvg: FC<Props> = ({ model }) => {
+const ViewSvg: FC<Props> = ({ model }) => {
     const [svg, setSvg] = useState<Svg | undefined>();
     useEffect(() => {
         svg?.clear();
@@ -29,4 +29,4 @@ const PresenterSvg: FC<Props> = ({ model }) => {
     );
 };
 
-export default PresenterSvg;
+export default ViewSvg;
