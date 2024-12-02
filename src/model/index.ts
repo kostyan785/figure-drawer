@@ -1,3 +1,4 @@
+import { getModelFieldNames } from "../utils";
 export class Point {
   constructor(
     public readonly x: number,
@@ -44,7 +45,7 @@ export const initRoom = (coords: Coords): Room => {
 
 export const initCustomModel = (shapes?: string[]): Model => {
   const model = initModel();
-  const shapeList = shapes || Object.entries(model).filter((entry) => typeof entry[1] !== 'function').map(result => result[0]);
+  const shapeList = shapes || getModelFieldNames(model);
   const modelClone = {
     ...model,
     lines: shapeList.includes('lines') ? model.lines : [],

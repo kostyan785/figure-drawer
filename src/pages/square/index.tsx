@@ -2,10 +2,11 @@ import React, { FC, useState, useEffect } from 'react';
 import Selector from '../../components/selector';
 import PresenterSvg from '../../views/presenter-svg';
 import { initCustomModel } from '../../model';
+import { getModelFieldNames } from '../../utils';
 import './index.css';
 
 const modelInitial = initCustomModel();
-const shapeList: string[] = Object.entries(modelInitial).filter((entry) => typeof entry[1] !== 'function').map(result => result[0]);
+const shapeList: string[] = getModelFieldNames(modelInitial);
 
 const Square: FC = () => {
     const [model, setModel] = useState(modelInitial);

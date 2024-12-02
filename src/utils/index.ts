@@ -1,4 +1,6 @@
-import { Coords } from "../model";
+import { Coords, Model, Room } from "../model";
+
+export type ModelType = Model | Room;
 
 export const getRoomArea = (points: Coords) => {
     if (!points.length) return 0;
@@ -23,4 +25,8 @@ export const getRoomArea = (points: Coords) => {
 		Stotal += S[i];
 	}
 	return Math.round(Stotal/100);
+};
+
+export const getModelFieldNames = (model: ModelType) => {
+	return Object.entries(model).filter((entry) => typeof entry[1] !== 'function').map(result => result[0]);
 };
