@@ -6,8 +6,8 @@ import './App.css';
 const App: FC = () => {
   return (
     <div className="App">
-      <Room />
       <Square />
+      <Room />
     </div>
   );
 }
