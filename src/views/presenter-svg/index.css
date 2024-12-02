@@ -1,0 +1,10 @@
+.presenter-svg__checkbox-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 20px 10px;
+}
+
+.presenter-svg__view-container {
+  height: 1000px;
+}

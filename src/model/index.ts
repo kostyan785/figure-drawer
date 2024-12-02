@@ -1,4 +1,3 @@
-import { Svg } from '@svgdotjs/svg.js';
 export class Point {
   constructor(
     public readonly x: number,
@@ -23,21 +22,7 @@ export class Model {
   constructor(
     public readonly vertices: Vertex[],
     public readonly lines: Line[],
-  ) {}  
-  printShape = (view: Svg | undefined, shapesToPrint: string[]) => {
-    view?.clear(); // TODO: модель имеет знания о представлении, это неправильно
-    if (shapesToPrint.includes('lines')) {
-      this.lines.forEach(line => {
-        view?.line(line.a.point.x, line.a.point.y, line.b.point.x, line.b.point.y).stroke({ width: 3, color: '#00F' });
-      });
-    }
-
-    if (shapesToPrint.includes('vertices')) {
-      this.vertices.forEach(vertex => {
-        view?.circle(10).cx(vertex.point.x).cy(vertex.point.y).fill('#0f0');
-      });
-    }
-  }
+  ) {}
 }
 
 export class Room {
@@ -46,7 +31,7 @@ export class Room {
   ) {}
 }
 
-export type Coords = number[][];
+export type Coords = number[][]; // TODO; TODO: надо бы поточнее типизировать, в пока так
 
 export const initRoom = (coords: Coords): Room => {
   const vertices: Vertex[] = coords.map(x => new Vertex( new Point(x[0], x[1])));
@@ -56,7 +41,6 @@ export const initRoom = (coords: Coords): Room => {
   });
   return new Room(lines);
 };
-
 
 /**
  * Генерация модели.
