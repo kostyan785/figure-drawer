@@ -1,0 +1,23 @@
+[
+    {
+        "type": "square",
+        "lineColor": "#f7dc6f",
+        "label": { "text": "", "x": 150, "y": 290, "style": {"color": "#f7dc6f", "width": 30} },
+        "vertices": [
+            { "x": 20, "y": 20, "style": {"color": "#52be80", "width": 20} }, 
+            { "x": 320, "y": 20, "style": {"color": "#52be80", "width": 20} }, 
+            { "x": 320, "y": 320, "style": {"color": "#52be80", "width": 20} }, 
+            { "x": 20, "y": 320, "style": {"color": "#52be80", "width": 20} }
+        ]        
+    },
+    {
+        "type": "triangle",
+        "lineColor": "#ec7063",
+        "label": { "text": "",  "x": 200, "y": 340, "style": {"color": "#ec7063", "width": 20} },
+        "vertices": [
+            { "x": 220, "y": 70, "style": {"color": "#5dade2", "width": 20} }, 
+            { "x": 370, "y": 370, "style": {"color": "#5dade2", "width": 20} }, 
+            { "x": 70, "y": 370, "style": {"color": "#5dade2", "width": 20} }            
+        ]        
+    }    
+]

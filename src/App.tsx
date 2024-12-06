@@ -1,37 +1,86 @@
-import { Svg, SVG } from '@svgdotjs/svg.js';
-import React, { useEffect, useState } from 'react';
-import './App.css';
-import { initModel } from "./model";
+import * as React from "react"
+import "./App.css"
+import shapesData from "./data/shapes.json"
+import {
+  EngineFactory,
+  Engine,
+  engineType,
+  initModel,
+  Drawer,
+  DynamicShape,
+  Room,
+} from "./models"
+import { Controls } from "./Controls"
 
+// Приложение отрисовки фигур
+const App = () => {
+  const sceneWidth: number = 410
+  const sceneHeight: number = 410
 
-function App() {
-  const [svg, setSvg] = useState<Svg | undefined>();
+  const svgRef = React.useRef<HTMLDivElement>(null)
+  const canvasRef = React.useRef<HTMLCanvasElement>(null)
 
-  const [model] = useState(initModel());
+  const [engineType, setEngineType] = React.useState<engineType>("svg")
+  const [engine, setEngine] = React.useState<Engine<any> | undefined>()
+  const [drawer, setDrawer] = React.useState<Drawer | undefined>()
 
-  useEffect(() => {
-    const newSvg = SVG().addTo('#app').height('100%').width('100%');
-    setSvg(newSvg);
-  }, [setSvg] );
+  // Инициализация объектов фигур
+  const [shapes] = React.useState(
+    shapesData.map((shape) => new DynamicShape(shape.type, initModel(shape)))
+  )
 
-  useEffect(() => {
-    svg?.clear();
+  // Комната
+  new Room(shapes)
 
-    model.lines.forEach(line => {
-      svg?.line(line.a.point.x, line.a.point.y, line.b.point.x, line.b.point.y).stroke({ width: 3, color: '#00F'});
-    });
+  // Метод отрисовки фигур
+  const draw = React.useCallback(() => {
+    drawer?.clear()
+    drawer?.draw(shapes)
+  }, [drawer, shapes])
 
-    model.vertices.forEach(vertex => {
-      svg?.circle(10).cx(vertex.point.x).cy(vertex.point.y).fill('#0f0');
-    });
+  // Обработка при инициализации движка
+  const handleEngineChange = React.useCallback(() => {
+    const canvas = canvasRef.current
+    const svg = svgRef.current
+    if (canvas) { canvas.width = 0; canvas.height = 0 }
+    if (svg) { svg.innerHTML = "" }
 
-  }, [model, svg]);
+    setEngine(EngineFactory.getEngine(engineType, `#${engineType}`, sceneWidth, sceneHeight))
+  }, [engineType])
 
+  // Инициализация движка
+  React.useEffect(() => handleEngineChange(), [engineType, handleEngineChange])
 
+  // Инициализация отрисовщика
+  React.useEffect(() => {
+    if (engine) { setDrawer(new Drawer(engine)) }
+  }, [engine, setDrawer, engineType])
+
+  // Запуск отрисовки
+  React.useEffect(() => draw(), [drawer, engineType, draw])
+
+  // Стиль блоков
+  const divStyle: { [param: string]: number | string } = {
+    height: "1000px", width: "50%", float: "left",
+  }
+
+  // Рендер приложения
   return (
-    <div className="App" id="app" style={{ height: '1000px' }}>
-    </div>
-  );
+    <>
+      <p>
+        <span>Engine({engineType}): </span>
+        <button onClick={() => setEngineType("canvas")}>canvas</button>
+        <button onClick={() => setEngineType("svg")}>svg</button>
+      </p>
+      <div style={{ ...divStyle }}>
+        <div id={"svg"} ref={svgRef} />
+        <canvas id={"canvas"} ref={canvasRef} />
+      </div>
+      <div style={{ ...divStyle }}>
+        <Controls shapes={shapes} draw={draw} divStyle={divStyle} />
+      </div>
+    </>
+  )
 }
 
-export default App;
+export default App
